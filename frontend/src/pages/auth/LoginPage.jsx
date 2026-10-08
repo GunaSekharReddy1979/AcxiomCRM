@@ -33,9 +33,15 @@ export default function LoginPage() {
     }
   };
 
+  const handleQuick = (demoEmail, demoPassword) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+    setErrorMessage('');
+  };
+
   return (
     <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light py-5 px-3">
-      <div style={{ maxWidth: '420px', width: '100%' }}>
+      <div style={{ maxWidth: '440px', width: '100%' }}>
         <div className="text-center mb-4">
           <div
             className="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-3 mb-3 shadow-sm"
@@ -133,7 +139,67 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="text-center text-muted small">
+        {/* Quick Demo Roles Card */}
+        <div className="card shadow-sm border-0 p-3 mb-3 bg-white">
+          <div className="d-flex align-items-center justify-content-between mb-2">
+            <span className="text-uppercase text-secondary fw-bold small" style={{ fontSize: '0.72rem', letterSpacing: '0.5px' }}>
+              <i className="bi bi-lightning-charge-fill text-warning me-1"></i> Quick Demo Roles
+            </span>
+            <span className="badge bg-light text-secondary border small">1-Click Fill</span>
+          </div>
+
+          <div className="d-grid gap-2">
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-danger text-start d-flex justify-content-between align-items-center py-2 px-3"
+              onClick={() => handleQuick('admin@acxiomcrm.com', 'Admin@123')}
+            >
+              <div>
+                <span className="fw-bold d-block text-dark" style={{ fontSize: '0.85rem' }}>
+                  Alexander Vance
+                </span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>
+                  admin@acxiomcrm.com • Full Admin Access
+                </span>
+              </div>
+              <span className="badge bg-danger">Admin</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-warning text-dark text-start d-flex justify-content-between align-items-center py-2 px-3"
+              onClick={() => handleQuick('manager@acxiomcrm.com', 'Manager@123')}
+            >
+              <div>
+                <span className="fw-bold d-block text-dark" style={{ fontSize: '0.85rem' }}>
+                  Sarah Jenkins
+                </span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>
+                  manager@acxiomcrm.com • Team Reports & Pipeline
+                </span>
+              </div>
+              <span className="badge bg-warning text-dark">Manager</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-info text-dark text-start d-flex justify-content-between align-items-center py-2 px-3"
+              onClick={() => handleQuick('sales@acxiomcrm.com', 'Sales@123')}
+            >
+              <div>
+                <span className="fw-bold d-block text-dark" style={{ fontSize: '0.85rem' }}>
+                  Marcus Sterling
+                </span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>
+                  sales@acxiomcrm.com • Scoped Sales Executive
+                </span>
+              </div>
+              <span className="badge bg-info text-dark">Sales Rep</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="text-center text-muted small" style={{ fontSize: '0.75rem' }}>
           Protected by AcxiomCRM RBAC & Enterprise Audit Security
         </div>
       </div>
