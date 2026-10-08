@@ -9,5 +9,6 @@ router.post('/login', loginValidation, validateRequest, authController.login);
 router.post('/register', registerValidation, validateRequest, authController.register);
 router.post('/logout', authenticateToken, authController.logout);
 router.get('/me', authenticateToken, authController.getMe);
+router.get('/roles', authController.getRoles);
 
 module.exports = router;

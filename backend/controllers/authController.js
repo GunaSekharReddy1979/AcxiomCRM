@@ -1,4 +1,5 @@
 const authService = require('../services/authService');
+const { Role } = require('../models');
 
 async function login(req, res, next) {
   try {
@@ -51,4 +52,16 @@ async function getMe(req, res, next) {
   }
 }
 
-module.exports = { login, register, logout, getMe };
+async function getRoles(req, res, next) {
+  try {
+    const roles = await Role.findAll({ order: [['RoleId', 'ASC']] });
+    return res.status(200).json({
+      success: true,
+      data: roles
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { login, register, logout, getMe, getRoles };

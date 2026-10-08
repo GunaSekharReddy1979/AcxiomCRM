@@ -6,6 +6,7 @@ import { useToast } from '../../context/ToastContext';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -17,7 +18,7 @@ export default function LoginPage() {
     e.preventDefault();
     setErrorMessage('');
     if (!email.trim() || !password) {
-      setErrorMessage('Please provide both email and password.');
+      setErrorMessage('Please provide both work email and password.');
       return;
     }
     try {
@@ -26,71 +27,114 @@ export default function LoginPage() {
       showToast(`Welcome back, ${user.name}!`, 'success');
       navigate('/dashboard');
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Authentication failed.');
+      setErrorMessage(err.response?.data?.message || 'Authentication failed. Please check credentials.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleQuick = (e_val, p_val) => {
-    setEmail(e_val);
-    setPassword(p_val);
-    setErrorMessage('');
-  };
-
   return (
     <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light py-5 px-3">
-      <div style={{ maxWidth: '440px', width: '100%' }}>
+      <div style={{ maxWidth: '420px', width: '100%' }}>
         <div className="text-center mb-4">
-          <div className="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-3 mb-3 shadow-sm" style={{ width: '52px', height: '52px' }}>
-            <i className="bi bi-diagram-3-fill fs-3 text-info"></i>
+          <div
+            className="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-3 mb-3 shadow-sm"
+            style={{ width: '56px', height: '56px' }}
+          >
+            <i className="bi bi-diagram-3-fill fs-2 text-info"></i>
           </div>
           <h2 className="fw-bold text-dark tracking-tight mb-1">AcxiomCRM</h2>
-          <p className="text-secondary small">Enterprise Customer Relationship Management Platform</p>
+          <p className="text-secondary small mb-0">Enterprise Customer Relationship Management Platform</p>
         </div>
 
-        <div className="card shadow-sm border-0 p-4 mb-4">
-          <h5 className="fw-bold text-dark mb-3">Sign in to your account</h5>
-          {errorMessage && <div className="alert alert-danger py-2 px-3 small mb-3">{errorMessage}</div>}
+        <div className="card shadow-sm border-0 p-4 mb-3">
+          <div className="mb-3">
+            <h5 className="fw-bold text-dark mb-1">Sign In</h5>
+            <p className="text-muted small mb-0">Access your CRM workspace with your enterprise credentials</p>
+          </div>
 
-          <form onSubmit={handleSubmit}>
+          {errorMessage && (
+            <div className="alert alert-danger py-2 px-3 small mb-3 d-flex align-items-center">
+              <i className="bi bi-exclamation-triangle-fill me-2 flex-shrink-0"></i>
+              <div>{errorMessage}</div>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} noValidate>
             <div className="mb-3">
               <label className="form-label small fw-semibold text-secondary">Work Email</label>
-              <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <div className="input-group">
+                <span className="input-group-text bg-white border-end-0 text-muted">
+                  <i className="bi bi-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  className="form-control border-start-0 ps-0"
+                  placeholder="name@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  required
+                />
+              </div>
             </div>
+
             <div className="mb-4">
               <label className="form-label small fw-semibold text-secondary">Password</label>
-              <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <div className="input-group">
+                <span className="input-group-text bg-white border-end-0 text-muted">
+                  <i className="bi bi-lock"></i>
+                </span>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className="form-control border-start-0 border-end-0 ps-0"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="input-group-text bg-white text-muted border-start-0"
+                  onClick={() => setShowPassword(!showPassword)}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                  tabIndex="-1"
+                >
+                  <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                </button>
+              </div>
             </div>
-            <button type="submit" className="btn btn-primary w-100 py-2 fw-semibold" disabled={loading}>
-              {loading ? 'Authenticating...' : 'Sign In'}
+
+            <button
+              type="submit"
+              className="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm" role="status"></span>
+                  <span>Authenticating...</span>
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-box-arrow-in-right"></i>
+                  <span>Sign In</span>
+                </>
+              )}
             </button>
           </form>
 
-          <div className="text-center mt-3 pt-3 border-top">
+          <div className="text-center mt-4 pt-3 border-top">
             <span className="text-muted small">Need an account? </span>
-            <Link to="/register" className="small fw-semibold text-primary text-decoration-none">Register new user</Link>
+            <Link to="/register" className="small fw-semibold text-primary text-decoration-none">
+              Register new user
+            </Link>
           </div>
         </div>
 
-        <div className="card shadow-sm border-0 p-3 bg-white">
-          <div className="text-uppercase text-secondary fw-bold small mb-2 text-center" style={{ fontSize: '0.75rem' }}>
-            <i className="bi bi-person-badge me-1"></i> Quick Demo Roles
-          </div>
-          <div className="d-grid gap-2">
-            <button type="button" className="btn btn-sm btn-outline-danger text-start d-flex justify-content-between align-items-center py-2" onClick={() => handleQuick('admin@acxiomcrm.com', 'Admin@123')}>
-              <div><span className="fw-bold d-block">Admin (Alexander Vance)</span><span className="small text-muted">Full administrative access</span></div>
-              <span className="badge bg-danger">Admin</span>
-            </button>
-            <button type="button" className="btn btn-sm btn-outline-warning text-dark text-start d-flex justify-content-between align-items-center py-2" onClick={() => handleQuick('manager@acxiomcrm.com', 'Manager@123')}>
-              <div><span className="fw-bold d-block">Manager (Sarah Jenkins)</span><span className="small text-muted">Team supervision & reports</span></div>
-              <span className="badge bg-warning text-dark">Manager</span>
-            </button>
-            <button type="button" className="btn btn-sm btn-outline-info text-dark text-start d-flex justify-content-between align-items-center py-2" onClick={() => handleQuick('sales@acxiomcrm.com', 'Sales@123')}>
-              <div><span className="fw-bold d-block">Sales Executive (Marcus Sterling)</span><span className="small text-muted">Territory assigned scope</span></div>
-              <span className="badge bg-info text-dark">Sales Rep</span>
-            </button>
-          </div>
+        <div className="text-center text-muted small">
+          Protected by AcxiomCRM RBAC & Enterprise Audit Security
         </div>
       </div>
     </div>

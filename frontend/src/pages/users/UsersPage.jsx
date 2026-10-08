@@ -12,6 +12,7 @@ export default function UsersPage() {
   const { showToast } = useToast();
 
   const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [loading, setLoading] = useState(true);
@@ -47,6 +48,24 @@ export default function UsersPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    async function fetchRoles() {
+      try {
+        const res = await api.get('/auth/roles');
+        if (res.data?.data) {
+          setRoles(res.data.data);
+        }
+      } catch (e) {
+        setRoles([
+          { RoleId: 1, RoleName: 'Admin' },
+          { RoleId: 2, RoleName: 'Manager' },
+          { RoleId: 3, RoleName: 'Sales Executive' }
+        ]);
+      }
+    }
+    fetchRoles();
+  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -209,9 +228,11 @@ export default function UsersPage() {
               onChange={(e) => setRoleFilter(e.target.value)}
             >
               <option value="">All Roles</option>
-              <option value="1">Admin</option>
-              <option value="2">Manager</option>
-              <option value="3">Sales Executive</option>
+              {roles.map((r) => (
+                <option key={r.RoleId} value={r.RoleId}>
+                  {r.RoleName}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -355,9 +376,11 @@ export default function UsersPage() {
                 value={formData.roleId}
                 onChange={(e) => setFormData({ ...formData, roleId: e.target.value })}
               >
-                <option value={3}>Sales Executive</option>
-                <option value={2}>Manager</option>
-                <option value={1}>Admin</option>
+                {roles.map((r) => (
+                  <option key={r.RoleId} value={r.RoleId}>
+                    {r.RoleName}
+                  </option>
+                ))}
               </select>
             </div>
 
