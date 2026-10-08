@@ -188,10 +188,10 @@ async function runAcceptanceTests() {
     method: 'POST',
     headers: { Authorization: `Bearer ${adminToken}` },
     body: {
-      customerName: 'Audit Trail Test Corp',
+      customerName: `Audit Trail Test Corp ${Date.now()}`,
       email: uniqueEmail,
       phone: uniquePhone,
-      companyName: 'Acme Audit Holdings'
+      companyName: `Acme Audit Holdings ${Date.now()}`
     }
   });
   const newCustId = custCreate.data?.data?.CustomerId;
