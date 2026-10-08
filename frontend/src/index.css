@@ -18,6 +18,11 @@
   --crm-table-border: #e2e8f0;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--crm-bg-body);
@@ -44,16 +49,22 @@ body {
   background: #94a3b8;
 }
 
-/* Sidebar Styles */
+/* Sidebar Styles - Pinned & Stationary */
 .crm-sidebar {
   width: 260px;
   min-width: 260px;
   background-color: var(--crm-sidebar-bg);
-  min-height: 100vh;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
-  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1040;
+  overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.12);
 }
 
 .crm-sidebar-brand {
@@ -138,6 +149,9 @@ body {
 .crm-main-layout {
   display: flex;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .crm-content-area {
@@ -145,12 +159,59 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-left: 260px;
+  width: calc(100% - 260px);
   background-color: var(--crm-bg-body);
+  min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .crm-page-container {
   padding: 1.75rem;
   flex: 1;
+  max-width: 100%;
+}
+
+/* Mobile & Tablet Responsive Navigation (< 992px) */
+@media (max-width: 991.98px) {
+  .crm-sidebar {
+    transform: translateX(-100%);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .crm-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .crm-content-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .crm-header {
+    padding: 0 1rem;
+  }
+
+  .crm-page-container {
+    padding: 1rem;
+  }
+
+  .crm-sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(2px);
+    z-index: 1035;
+    animation: crmFadeIn 0.2s ease-in-out;
+  }
+}
+
+@keyframes crmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Cards */

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-export default function Header() {
+export default function Header({ onToggleSidebar }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +26,16 @@ export default function Header() {
 
   return (
     <header className="crm-header">
-      <div className="d-flex align-items-center" style={{ width: '380px' }}>
+      <div className="d-flex align-items-center" style={{ maxWidth: '420px', width: '100%' }}>
+        <button
+          type="button"
+          className="btn btn-light d-lg-none me-2 p-1 border shadow-sm"
+          onClick={onToggleSidebar}
+          aria-label="Toggle navigation"
+          style={{ width: '36px', height: '36px' }}
+        >
+          <i className="bi bi-list fs-5"></i>
+        </button>
         <form onSubmit={handleSearchSubmit} className="w-100 position-relative">
           <i className="bi bi-search position-absolute text-muted" style={{ left: '12px', top: '10px' }}></i>
           <input
